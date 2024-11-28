@@ -1,9 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { verifyPassword, createSession } from '@/lib/auth';
 import { loginSchema } from '@/lib/db/schema/user.schema';
 
-export async function POST(request: Request) {
+export const dynamic = 'force-dynamic';
+
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { username, password } = loginSchema.parse(body);
