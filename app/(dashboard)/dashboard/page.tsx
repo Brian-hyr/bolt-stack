@@ -1,7 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Cog, Users } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { getCurrentUser } from '@/lib/auth-client';
 
 const features = [
   {
@@ -19,6 +23,15 @@ const features = [
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = getCurrentUser();
+    if (!user) {
+      router.push('/login');
+    }
+  }, [router]);
+
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold text-white">Dashboard</h1>
@@ -31,6 +44,7 @@ export default function DashboardPage() {
             <Card
               key={feature.title}
               className="p-6 bg-primary-custom hover:bg-accent/90 transition-colors cursor-pointer group"
+              onClick={() => router.push(feature.href)}
             >
               <div className={cn(
                 "w-16 h-16 rounded-lg flex items-center justify-center mb-4",

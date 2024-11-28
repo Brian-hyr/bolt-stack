@@ -23,3 +23,16 @@ model User {
 
   @@map("users")
 }
+
+model Cliente {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  sigla      String?   @db.VarChar(50)
+  comentario String?   @db.Text
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  asn_id     Int?
+  domain_id  Int?
+
+  @@map("clientes")
+}
