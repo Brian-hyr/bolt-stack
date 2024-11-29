@@ -17,8 +17,8 @@ const sidebarItems = [
   { name: 'Home', href: '/dashboard', icon: Home },
   { name: 'Automações', href: '/dashboard/automations', icon: Cog },
   { name: 'Empresas', href: '/dashboard/companies', icon: Building2 },
-  { name: 'Customers', href: '/dashboard/customers', icon: Users },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Usuários', href: '/dashboard/users', icon: Users },
+  { name: 'Configurações', href: '/dashboard/settings', icon: Settings },
   { name: 'Cadastros', href: '/dashboard/registers', icon: FileSpreadsheet },
 ];
 

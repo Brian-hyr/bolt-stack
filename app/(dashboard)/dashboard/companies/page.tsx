@@ -6,6 +6,8 @@ import { PageHeader } from '@/components/layout/page-header';
 import { CompanyList } from '@/components/companies/company-list';
 import { useCompanies } from '@/hooks/use-companies';
 import { getCurrentUser } from '@/lib/auth-client';
+import { Button } from '@/components/ui/button';
+import { Plus, Network } from 'lucide-react';
 
 export default function CompaniesPage() {
   const router = useRouter();
@@ -36,10 +38,28 @@ export default function CompaniesPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title="Companies" 
-        description="Manage your company list"
-      />
+      <div className="flex justify-between items-center">
+        <PageHeader 
+          title="Empresas" 
+          description="Gerenciar lista de empresas"
+        />
+        <div className="flex gap-4">
+          <Button 
+            onClick={() => router.push('/dashboard/ptp')}
+            className="bg-[#12141a] hover:bg-[#1a1d24] text-white"
+          >
+            <Network className="w-4 h-4 mr-2" />
+            PTPs
+          </Button>
+          <Button 
+            onClick={() => router.push('/dashboard/companies/new')}
+            className="bg-white hover:bg-white/90 text-black"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Empresa
+          </Button>
+        </div>
+      </div>
       <CompanyList companies={companies || []} />
     </div>
   );

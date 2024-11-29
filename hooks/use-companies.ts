@@ -1,7 +1,13 @@
 import useSWR from 'swr';
 import { Company } from '@/types/company';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error('Failed to fetch companies');
+  }
+  return res.json();
+};
 
 export function useCompanies() {
   const { data, error, isLoading } = useSWR<Company[]>('/api/companies', fetcher);
