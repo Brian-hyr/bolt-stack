@@ -20,6 +20,7 @@ model User {
   date_joined     DateTime  @default(now())
   last_login      DateTime?
   updatedAt       DateTime  @updatedAt
+  workflows       Workflow[]
 
   @@map("users")
 }
@@ -33,6 +34,36 @@ model Cliente {
   updated_at DateTime? @default(now())
   asn_id     Int?
   domain_id  Int?
+  workflows  Workflow[]
 
   @@map("clientes")
+}
+
+model Workflow {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  nodes       Json
+  edges       Json
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  user_id     String
+  client_id   Int?
+  is_active   Boolean   @default(true)
+  user        User      @relation(fields: [user_id], references: [id])
+  client      Cliente?  @relation(fields: [client_id], references: [id])
+
+  @@map("workflows")
+}
+
+model WorkflowExecution {
+  id          Int      @id @default(autoincrement())
+  workflow_id Int
+  status      String   @default("pending") // pending, running, completed, failed
+  started_at  DateTime @default(now())
+  ended_at    DateTime?
+  logs        Json?
+  result      Json?
+
+  @@map("workflow_executions")
 }
