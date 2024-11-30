@@ -10,6 +10,7 @@ import {
   Building2, 
   Cog,
   FileSpreadsheet,
+  ClipboardCheck,
 } from 'lucide-react';
 import { LogoutButton } from '@/components/auth/logout-button';
 
@@ -18,6 +19,7 @@ const sidebarItems = [
   { name: 'Automações', href: '/dashboard/automations', icon: Cog },
   { name: 'Empresas', href: '/dashboard/companies', icon: Building2 },
   { name: 'Usuários', href: '/dashboard/users', icon: Users },
+  { name: 'Auditorias', href: '/dashboard/audits', icon: ClipboardCheck },
   { name: 'Configurações', href: '/dashboard/settings', icon: Settings },
   { name: 'Cadastros', href: '/dashboard/registers', icon: FileSpreadsheet },
 ];

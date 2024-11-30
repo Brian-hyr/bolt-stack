@@ -12,6 +12,15 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { username },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+        is_admin: true,
+        is_collaborator: true,
+        is_client: true
+      }
     });
 
     if (!user) {
@@ -35,18 +44,10 @@ export async function POST(request: NextRequest) {
       data: { last_login: new Date() },
     });
 
+    const { password: _, ...userWithoutPassword } = user;
     const token = await createSession(user.id);
 
-    return NextResponse.json({
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        is_admin: user.is_admin,
-        is_collaborator: user.is_collaborator,
-        is_client: user.is_client
-      }
-    }, {
+    return NextResponse.json({ user: userWithoutPassword }, {
       headers: {
         'Set-Cookie': `session=${token}; Path=/; HttpOnly; SameSite=Lax; ${
           process.env.NODE_ENV === 'production' ? 'Secure;' : ''

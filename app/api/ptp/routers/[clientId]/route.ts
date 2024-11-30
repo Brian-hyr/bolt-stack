@@ -11,6 +11,9 @@ export async function GET(
         cliente_id: parseInt(params.clientId),
         status: 'ativo'
       },
+      include: {
+        ips: true
+      },
       orderBy: {
         name: 'asc'
       }

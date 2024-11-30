@@ -7,15 +7,12 @@ export async function GET() {
   try {
     const companies = await prisma.cliente.findMany({
       orderBy: { id: 'asc' },
-      select: {
-        id: true,
-        name: true,
-        sigla: true,
-        comentario: true,
-        created_at: true,
-        updated_at: true,
-        asn_id: true,
-        domain_id: true
+      include: {
+        hosts: {
+          include: {
+            ips: true
+          }
+        }
       }
     });
     

@@ -6,14 +6,19 @@ export async function GET(
   { params }: { params: { clientId: string } }
 ) {
   try {
-    const blocks = await prisma.client_ptp_blocks.findMany({
-      where: {
+    // For now, return mock data since we don't have the actual table yet
+    const blocks = [
+      {
+        id: 1,
+        ip_block_start: '10.64.0.0/24',
         client_id: parseInt(params.clientId)
       },
-      orderBy: {
-        ip_block_start: 'asc'
+      {
+        id: 2,
+        ip_block_start: '10.64.1.0/24',
+        client_id: parseInt(params.clientId)
       }
-    });
+    ];
 
     return NextResponse.json(blocks);
   } catch (error) {

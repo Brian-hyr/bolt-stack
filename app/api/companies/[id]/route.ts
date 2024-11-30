@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { mockCompanies } from '@/lib/mock/companies';
+import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,9 +8,16 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const company = mockCompanies.find(
-      (c) => c.id === parseInt(params.id)
-    );
+    const company = await prisma.cliente.findUnique({
+      where: { id: parseInt(params.id) },
+      include: {
+        hosts: {
+          include: {
+            ips: true
+          }
+        }
+      }
+    });
 
     if (!company) {
       return NextResponse.json(

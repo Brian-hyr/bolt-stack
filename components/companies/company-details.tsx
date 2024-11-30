@@ -4,14 +4,17 @@ import { useCompanyDetails } from '@/hooks/use-company-details';
 import { HostsTab } from './tabs/hosts-tab';
 import { ServersTab } from './tabs/servers-tab';
 import { AccountsTab } from './tabs/accounts-tab';
-import { Monitor, Server, Key } from 'lucide-react';
+import { Monitor, Server, Key, Network } from 'lucide-react';
 import { mockHosts, mockServers, mockAccounts } from '@/lib/mock/data';
+import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
 
 interface CompanyDetailsProps {
   id: string;
 }
 
 export function CompanyDetails({ id }: CompanyDetailsProps) {
+  const router = useRouter();
   const { company, loading, error } = useCompanyDetails(id);
 
   if (loading) {
@@ -24,13 +27,22 @@ export function CompanyDetails({ id }: CompanyDetailsProps) {
 
   return (
     <div className="flex-1 space-y-6">
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 border-2 border-dashed border-blue-500/30 rounded-lg flex items-center justify-center">
-          <div className="text-gray-400">Logo</div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 border-2 border-dashed border-blue-500/30 rounded-lg flex items-center justify-center">
+            <div className="text-gray-400">Logo</div>
+          </div>
+          <h1 className="text-3xl font-bold text-white">
+            {company.id} - {company.name}
+          </h1>
         </div>
-        <h1 className="text-3xl font-bold text-white">
-          {company.id} - {company.name}
-        </h1>
+        <Button 
+          onClick={() => router.push(`/dashboard/ptp?client=${company.id}`)}
+          className="bg-[#12141a] hover:bg-[#1a1d24] text-white"
+        >
+          <Network className="w-4 h-4 mr-2" />
+          Ver PTPs
+        </Button>
       </div>
 
       <Card className="bg-[#1a1d24] border-[#2a2f3a] p-6">
