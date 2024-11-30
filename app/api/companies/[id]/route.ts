@@ -9,14 +9,7 @@ export async function GET(
 ) {
   try {
     const company = await prisma.cliente.findUnique({
-      where: { id: parseInt(params.id) },
-      include: {
-        hosts: {
-          include: {
-            ips: true
-          }
-        }
-      }
+      where: { id: parseInt(params.id) }
     });
 
     if (!company) {

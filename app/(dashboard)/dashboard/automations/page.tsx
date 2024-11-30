@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { PageHeader } from '@/components/layout/page-header';
 import { getCurrentUser } from '@/lib/auth-client';
 import { Card } from '@/components/ui/card';
-import { Cog } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Cog, Plus } from 'lucide-react';
 
 export default function AutomationsPage() {
   const router = useRouter();
@@ -19,10 +20,19 @@ export default function AutomationsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title="Automations" 
-        description="Manage your automated tasks"
-      />
+      <div className="flex justify-between items-center">
+        <PageHeader 
+          title="Automations" 
+          description="Manage your automated tasks"
+        />
+        <Button 
+          onClick={() => router.push('/dashboard/workflows/new')}
+          className="bg-white hover:bg-white/90 text-black"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Create Workflow
+        </Button>
+      </div>
       
       <Card className="p-6 bg-primary-custom">
         <div className="flex items-center space-x-4 mb-6">
@@ -33,7 +43,7 @@ export default function AutomationsPage() {
         </div>
         
         <div className="text-center text-gray-400 py-8">
-          Automation features coming soon
+          No workflows found. Create your first workflow to get started.
         </div>
       </Card>
     </div>

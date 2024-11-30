@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id              Int       @id @default(autoincrement())
+  id              String    @id @default(cuid())
   username        String    @unique
   email           String    @unique
   password        String
@@ -16,7 +16,7 @@ model User {
   chatid          String?
   is_admin        Boolean   @default(false)
   is_collaborator Boolean   @default(false)
-  is_client       Boolean   @default(false)
+  is_client       Boolean   @default(true)
   date_joined     DateTime  @default(now())
   last_login      DateTime?
 
@@ -32,49 +32,21 @@ model Cliente {
   updated_at DateTime? @default(now())
   asn_id     Int?
   domain_id  Int?
-  hosts      Host[]
 
   @@map("clientes")
 }
 
-model Host {
+model Workflow {
   id          Int       @id @default(autoincrement())
-  name        String    @unique
-  comentario  String?
-  status      String    @default("ativo")
-  model_id    Int?
-  cliente_id  Int?
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @default(now())
-  deleted_at  DateTime?
-  cliente     Cliente?  @relation(fields: [cliente_id], references: [id])
-  ips         Ip[]
+  name        String
+  description String?
+  nodes       Json      // Stores the workflow nodes configuration
+  edges       Json      // Stores the connections between nodes
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  user_id     String    // Reference to the user who created the workflow
+  client_id   Int?      // Optional reference to a client
 
-  @@map("hosts")
-}
-
-model Ip {
-  id          Int      @id @default(autoincrement())
-  ip_address  String
-  version     String
-  type        String?
-  host_id     Int
-  host        Host     @relation(fields: [host_id], references: [id], onDelete: Cascade)
-
-  @@map("ips")
-}
-
-model PtpLink {
-  id            Int      @id @default(autoincrement())
-  ptp_number    Int
-  host_a_id     Int
-  host_b_id     Int
-  ip_v4_host_a  String   @db.Cidr
-  ip_v4_host_b  String   @db.Cidr
-  vlan_ipv4     Int
-  vlan_ipv6     Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
-
-  @@map("ptp_links")
+  @@map("workflows")
 }

@@ -6,14 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const companies = await prisma.cliente.findMany({
-      orderBy: { id: 'asc' },
-      include: {
-        hosts: {
-          include: {
-            ips: true
-          }
-        }
-      }
+      orderBy: { id: 'asc' }
     });
     
     return NextResponse.json(companies);
