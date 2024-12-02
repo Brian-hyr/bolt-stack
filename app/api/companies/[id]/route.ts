@@ -7,7 +7,12 @@ export async function GET(
 ) {
   try {
     const company = await prisma.cliente.findUnique({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(params.id) },
+      include: {
+        asns: true,
+        ipv4s: true,
+        ipv6s: true
+      }
     });
 
     if (!company) {
@@ -17,24 +22,7 @@ export async function GET(
       );
     }
 
-    const [asns, ipv4s, ipv6s] = await Promise.all([
-      prisma.aSN.findMany({
-        where: { cliente_id: company.id }
-      }),
-      prisma.iPv4Prefix.findMany({
-        where: { cliente_id: company.id }
-      }),
-      prisma.iPv6Prefix.findMany({
-        where: { cliente_id: company.id }
-      })
-    ]);
-
-    return NextResponse.json({
-      ...company,
-      asns,
-      ipv4s,
-      ipv6s
-    });
+    return NextResponse.json(company);
   } catch (error) {
     console.error('Error fetching company details:', error);
     return NextResponse.json(
@@ -56,6 +44,11 @@ export async function PUT(
         name: body.name,
         sigla: body.sigla || null,
         comentario: body.comentario || null
+      },
+      include: {
+        asns: true,
+        ipv4s: true,
+        ipv6s: true
       }
     });
 

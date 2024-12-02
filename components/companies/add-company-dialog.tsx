@@ -14,12 +14,12 @@ export function AddCompanyDialog() {
       <DialogTrigger asChild>
         <Button className="bg-white hover:bg-white/90 text-black">
           <Plus className="w-4 h-4 mr-2" />
-          Add Company
+          Adicionar Empresa
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1a1d24] border-[#2a2f3a] text-white">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Add New Company</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">Adicionar Nova Empresa</DialogTitle>
         </DialogHeader>
         <AddCompanyForm onSuccess={() => setOpen(false)} />
       </DialogContent>
