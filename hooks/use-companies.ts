@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { Company } from '@/types/company';
+import type { Company } from '@/types/company';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -10,11 +10,12 @@ const fetcher = async (url: string) => {
 };
 
 export function useCompanies() {
-  const { data, error, isLoading } = useSWR<Company[]>('/api/companies', fetcher);
+  const { data, error, isLoading, mutate } = useSWR<Company[]>('/api/companies', fetcher);
 
   return {
     companies: data,
     isLoading,
-    error: error?.message
+    error: error?.message,
+    mutate
   };
 }

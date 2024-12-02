@@ -6,7 +6,6 @@ import { userSchema } from '@/lib/validations/user';
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
-      orderBy: { date_joined: 'desc' },
       select: {
         id: true,
         username: true,
@@ -18,7 +17,8 @@ export async function GET() {
         is_client: true,
         date_joined: true,
         last_login: true
-      }
+      },
+      orderBy: { date_joined: 'desc' }
     });
 
     return NextResponse.json(users);
@@ -56,14 +56,23 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({
       data: {
         ...validatedData,
-        password: hashedPassword,
-        date_joined: new Date(),
+        password: hashedPassword
       },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        contato: true,
+        chatid: true,
+        is_admin: true,
+        is_collaborator: true,
+        is_client: true,
+        date_joined: true,
+        last_login: true
+      }
     });
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+    return NextResponse.json(user);
   } catch (error) {
     console.error('Error creating user:', error);
     return NextResponse.json(

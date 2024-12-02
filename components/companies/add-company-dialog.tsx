@@ -4,13 +4,9 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { AddHostForm } from './add-host-form';
+import { AddCompanyForm } from './add-company-form';
 
-interface AddHostDialogProps {
-  clientId: number;
-}
-
-export function AddHostDialog({ clientId }: AddHostDialogProps) {
+export function AddCompanyDialog() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -18,14 +14,14 @@ export function AddHostDialog({ clientId }: AddHostDialogProps) {
       <DialogTrigger asChild>
         <Button className="bg-white hover:bg-white/90 text-black">
           <Plus className="w-4 h-4 mr-2" />
-          Add Host
+          Add Company
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1a1d24] border-[#2a2f3a] text-white">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Add New Host</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">Add New Company</DialogTitle>
         </DialogHeader>
-        <AddHostForm onSuccess={() => setOpen(false)} clientId={clientId} />
+        <AddCompanyForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

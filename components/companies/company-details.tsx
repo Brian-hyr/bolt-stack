@@ -5,7 +5,6 @@ import { HostsTab } from './tabs/hosts-tab';
 import { ServersTab } from './tabs/servers-tab';
 import { AccountsTab } from './tabs/accounts-tab';
 import { Monitor, Server, Key, Network } from 'lucide-react';
-import { mockHosts, mockServers, mockAccounts } from '@/lib/mock/data';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
 
@@ -41,55 +40,24 @@ export function CompanyDetails({ id }: CompanyDetailsProps) {
           className="bg-[#12141a] hover:bg-[#1a1d24] text-white"
         >
           <Network className="w-4 h-4 mr-2" />
-          Ver PTPs
+          View PTPs
         </Button>
       </div>
 
       <Card className="bg-[#1a1d24] border-[#2a2f3a] p-6">
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-gray-400 text-sm mb-2">ASN</h3>
-              <div className="flex flex-wrap gap-2">
-                <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                  272619
-                </div>
-                <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                  262793
-                </div>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-gray-400 text-sm mb-2">Domínios</h3>
-              <div className="flex flex-wrap gap-2">
-                <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                  fivetelecom.net.br
-                </div>
-                <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                  fivetelecom.com.br
-                </div>
-              </div>
-            </div>
-          </div>
           <div>
-            <h3 className="text-gray-400 text-sm mb-2">IPv4</h3>
-            <div className="flex flex-wrap gap-2">
-              <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                187.120.30.0/24
+            <h3 className="text-gray-400 text-sm mb-2">Company Details</h3>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
+                  {company.sigla || 'No abbreviation'}
+                </div>
               </div>
-              <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                45.119.120.0/24
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-gray-400 text-sm mb-2">IPv6</h3>
-            <div className="flex flex-wrap gap-2">
-              <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                2804:8614::/32
-              </div>
-              <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
-                2804:8615::/32
+              <div>
+                <div className="bg-[#12141a] px-3 py-1.5 rounded text-white font-mono text-sm">
+                  {company.comentario || 'No comments'}
+                </div>
               </div>
             </div>
           </div>
@@ -111,25 +79,25 @@ export function CompanyDetails({ id }: CompanyDetailsProps) {
               className="flex-1 h-12 data-[state=active]:bg-accent"
             >
               <Server className="w-4 h-4 mr-2" />
-              Servidores
+              Servers
             </TabsTrigger>
             <TabsTrigger
               value="accounts"
               className="flex-1 h-12 data-[state=active]:bg-accent"
             >
               <Key className="w-4 h-4 mr-2" />
-              Contas
+              Accounts
             </TabsTrigger>
           </TabsList>
           <div className="p-4">
             <TabsContent value="hosts">
-              <HostsTab hosts={mockHosts} />
+              <HostsTab hosts={company.hosts || []} clientId={company.id} />
             </TabsContent>
             <TabsContent value="servers">
-              <ServersTab servers={mockServers} />
+              <ServersTab servers={company.servers || []} />
             </TabsContent>
             <TabsContent value="accounts">
-              <AccountsTab accounts={mockAccounts} />
+              <AccountsTab accounts={company.accounts || []} />
             </TabsContent>
           </div>
         </Tabs>

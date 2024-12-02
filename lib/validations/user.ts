@@ -8,7 +8,7 @@ export const userSchema = z.object({
   chatid: z.string().optional(),
   is_admin: z.boolean().default(false),
   is_collaborator: z.boolean().default(false),
-  is_client: z.boolean().default(false),
+  is_client: z.boolean().default(false)
 });
 
 export type UserFormData = z.infer<typeof userSchema>;

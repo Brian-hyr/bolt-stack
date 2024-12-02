@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id              String    @id @default(cuid())
+  id              Int       @id @default(autoincrement())
   username        String    @unique
   email           String    @unique
   password        String
@@ -24,29 +24,57 @@ model User {
 }
 
 model Cliente {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(255)
-  sigla      String?   @db.VarChar(50)
-  comentario String?   @db.Text
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
-  asn_id     Int?
-  domain_id  Int?
+  id         Int           @id @default(autoincrement())
+  name       String        @db.VarChar(255)
+  sigla      String?       @db.VarChar(50)
+  comentario String?       @db.Text
+  created_at DateTime      @default(now())
+  updated_at DateTime      @updatedAt
+  asns       ASN[]
+  ipv4s      IPv4Prefix[]
+  ipv6s      IPv6Prefix[]
 
   @@map("clientes")
 }
 
+model ASN {
+  id         Int      @id @default(autoincrement())
+  asn_number String   @unique @db.VarChar(50)
+  cliente_id Int?
+  cliente    Cliente? @relation(fields: [cliente_id], references: [id])
+
+  @@map("asn")
+}
+
+model IPv4Prefix {
+  id         Int      @id @default(autoincrement())
+  prefix     String   @unique @db.VarChar(50)
+  cliente_id Int?
+  cliente    Cliente? @relation(fields: [cliente_id], references: [id])
+
+  @@map("ipv4_prefixes")
+}
+
+model IPv6Prefix {
+  id         Int      @id @default(autoincrement())
+  prefix     String   @unique @db.VarChar(50)
+  cliente_id Int?
+  cliente    Cliente? @relation(fields: [cliente_id], references: [id])
+
+  @@map("ipv6_prefixes")
+}
+
 model Workflow {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
-  nodes       Json      // Stores the workflow nodes configuration
-  edges       Json      // Stores the connections between nodes
-  is_active   Boolean   @default(true)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  user_id     String    // Reference to the user who created the workflow
-  client_id   Int?      // Optional reference to a client
+  nodes       Json
+  edges       Json
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  user_id     Int
+  client_id   Int?
 
   @@map("workflows")
 }

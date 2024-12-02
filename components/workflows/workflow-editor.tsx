@@ -8,7 +8,9 @@ import ReactFlow, {
   Edge,
   Connection,
   addEdge,
-} from 'react-flow-renderer';
+  ReactFlowProvider
+} from 'reactflow';
+import 'reactflow/dist/style.css';
 import { Card } from '@/components/ui/card';
 import { WorkflowToolbar } from './workflow-toolbar';
 import { StartNode } from './nodes/start-node';
@@ -29,8 +31,17 @@ const nodeTypes = {
   code: CodeNode,
 };
 
+const initialNodes: Node[] = [
+  {
+    id: 'start',
+    type: 'start',
+    position: { x: 250, y: 0 },
+    data: { label: 'Start' }
+  }
+];
+
 export function WorkflowEditor() {
-  const [nodes, setNodes] = useState<Node[]>([]);
+  const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>([]);
 
   const onConnect = useCallback(
@@ -53,30 +64,34 @@ export function WorkflowEditor() {
     []
   );
 
+  const addNode = useCallback((type: string) => {
+    const newNode = {
+      id: `${type}-${Date.now()}`,
+      type,
+      position: { x: 250, y: nodes.length * 100 + 100 },
+      data: { label: `${type} ${nodes.length + 1}` },
+    };
+    setNodes((nds) => [...nds, newNode]);
+  }, [nodes]);
+
   return (
     <Card className="h-full bg-primary-custom p-4">
-      <WorkflowToolbar onAddNode={(type) => {
-        const newNode = {
-          id: `${type}-${nodes.length + 1}`,
-          type,
-          position: { x: 100, y: 100 },
-          data: { label: `${type} ${nodes.length + 1}` },
-        };
-        setNodes([...nodes, newNode]);
-      }} />
+      <WorkflowToolbar onAddNode={addNode} />
       
       <div className="h-[calc(100%-4rem)]">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onConnect={onConnect}
-          nodeTypes={nodeTypes}
-          fitView
-        >
-          <Background />
-          <Controls />
-        </ReactFlow>
+        <ReactFlowProvider>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            fitView
+          >
+            <Background />
+            <Controls />
+          </ReactFlow>
+        </ReactFlowProvider>
       </div>
     </Card>
   );

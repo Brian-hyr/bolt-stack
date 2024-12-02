@@ -45,13 +45,13 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || 'Falha ao criar usuário');
+        throw new Error(error.message || 'Failed to create user');
       }
 
       onOpenChange(false);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Falha ao criar usuário');
+      setError(err instanceof Error ? err.message : 'Failed to create user');
     } finally {
       setLoading(false);
     }
@@ -61,12 +61,12 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px] bg-primary-custom text-white">
         <DialogHeader>
-          <DialogTitle>Adicionar Novo Usuário</DialogTitle>
+          <DialogTitle>Add New User</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Nome de Usuário</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
               id="username"
               name="username"
@@ -87,7 +87,7 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               name="password"
@@ -98,7 +98,7 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="contato">Contato</Label>
+            <Label htmlFor="contato">Contact</Label>
             <Input
               id="contato"
               name="contato"
@@ -115,20 +115,47 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3 pt-2">
             <div className="flex items-center space-x-2">
-              <Checkbox id="is_admin" name="is_admin" />
-              <Label htmlFor="is_admin">Administrador</Label>
+              <Checkbox 
+                id="is_admin" 
+                name="is_admin"
+                className="bg-[#12141a] border-[#2a2f3a] data-[state=checked]:bg-white data-[state=checked]:text-black"
+              />
+              <Label 
+                htmlFor="is_admin"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Administrator
+              </Label>
             </div>
 
             <div className="flex items-center space-x-2">
-              <Checkbox id="is_collaborator" name="is_collaborator" />
-              <Label htmlFor="is_collaborator">Colaborador</Label>
+              <Checkbox 
+                id="is_collaborator" 
+                name="is_collaborator"
+                className="bg-[#12141a] border-[#2a2f3a] data-[state=checked]:bg-white data-[state=checked]:text-black"
+              />
+              <Label 
+                htmlFor="is_collaborator"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Collaborator
+              </Label>
             </div>
 
             <div className="flex items-center space-x-2">
-              <Checkbox id="is_client" name="is_client" />
-              <Label htmlFor="is_client">Cliente</Label>
+              <Checkbox 
+                id="is_client" 
+                name="is_client"
+                className="bg-[#12141a] border-[#2a2f3a] data-[state=checked]:bg-white data-[state=checked]:text-black"
+              />
+              <Label 
+                htmlFor="is_client"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Client
+              </Label>
             </div>
           </div>
 
@@ -143,7 +170,7 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
               onClick={() => onOpenChange(false)}
               className="border-[#2a2f3a]"
             >
-              Cancelar
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -153,10 +180,10 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Criando...
+                  Creating...
                 </>
               ) : (
-                'Criar Usuário'
+                'Create User'
               )}
             </Button>
           </div>
