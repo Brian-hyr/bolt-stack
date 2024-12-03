@@ -1,16 +1,10 @@
-'use client';
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { AddHostForm } from './add-host-form';
 
-interface AddHostDialogProps {
-  clientId: number;
-}
-
-export function AddHostDialog({ clientId }: AddHostDialogProps) {
+export function AddHostDialog() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,7 +19,7 @@ export function AddHostDialog({ clientId }: AddHostDialogProps) {
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Add New Host</DialogTitle>
         </DialogHeader>
-        <AddHostForm onSuccess={() => setOpen(false)} clientId={clientId} />
+        <AddHostForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

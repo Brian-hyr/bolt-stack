@@ -1,5 +1,3 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Company } from '@/types/company';
@@ -33,23 +31,6 @@ export function CompanyListItem({ company }: CompanyListItemProps) {
               {company.sigla}
             </p>
           )}
-          <div className="mt-2 space-y-1">
-            {company.asns?.length > 0 && (
-              <div className="text-sm text-gray-400">
-                ASNs: {company.asns.map(asn => asn.asn_number).join(', ')}
-              </div>
-            )}
-            {company.ipv4s?.length > 0 && (
-              <div className="text-sm text-gray-400">
-                IPv4: {company.ipv4s.map(ip => ip.prefix).join(', ')}
-              </div>
-            )}
-            {company.ipv6s?.length > 0 && (
-              <div className="text-sm text-gray-400">
-                IPv6: {company.ipv6s.map(ip => ip.prefix).join(', ')}
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </Card>

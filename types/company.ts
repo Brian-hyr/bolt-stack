@@ -3,35 +3,14 @@ export interface Company {
   name: string;
   sigla: string | null;
   comentario: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at: string | null;
+  updated_at: string | null;
   asn_id: number | null;
   domain_id: number | null;
-  asns?: ASN[];
-  ipv4s?: IPv4Prefix[];
-  ipv6s?: IPv6Prefix[];
-}
-
-export interface ASN {
-  id: number;
-  asn_number: string;
-  cliente_id: number | null;
-}
-
-export interface IPv4Prefix {
-  id: number;
-  prefix: string;
-  cliente_id: number | null;
-}
-
-export interface IPv6Prefix {
-  id: number;
-  prefix: string;
-  cliente_id: number | null;
 }
 
 export interface CompanyDetails extends Company {
-  asns: ASN[];
-  ipv4s: IPv4Prefix[];
-  ipv6s: IPv6Prefix[];
+  ipv4?: string[];
+  ipv6?: string[];
+  domains?: string[];
 }

@@ -7,71 +7,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cliente {
-  id         Int           @id @default(autoincrement())
-  name       String        @db.VarChar(255)
-  sigla      String?      @db.VarChar(50)
-  comentario String?      @db.Text
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt
-  asn_id     Int?
-  domain_id  Int?
-  asns       ASN[]
-  ipv4s      IPv4Prefix[]
-  ipv6s      IPv6Prefix[]
-  domains    Domain[]
-
-  @@map("clientes")
-}
-
-model ASN {
-  id         Int      @id @default(autoincrement())
-  asn_number String   @unique @db.VarChar(50)
-  cliente_id Int?
-  cliente    Cliente? @relation(fields: [cliente_id], references: [id])
-
-  @@map("asn")
-}
-
-model IPv4Prefix {
-  id         Int      @id @default(autoincrement())
-  prefix     String   @unique @db.VarChar(50)
-  cliente_id Int?
-  cliente    Cliente? @relation(fields: [cliente_id], references: [id])
-
-  @@map("ipv4_prefixes")
-}
-
-model IPv6Prefix {
-  id         Int      @id @default(autoincrement())
-  prefix     String   @unique @db.VarChar(50)
-  cliente_id Int?
-  cliente    Cliente? @relation(fields: [cliente_id], references: [id])
-
-  @@map("ipv6_prefixes")
-}
-
-model Domain {
-  id          Int      @id @default(autoincrement())
-  domain_name String   @unique @db.VarChar(255)
-  cliente_id  Int?
-  cliente     Cliente? @relation(fields: [cliente_id], references: [id])
-
-  @@map("domains")
-}
-
 model User {
   id              Int       @id @default(autoincrement())
-  username        String    @unique @db.VarChar(255)
-  email           String    @unique @db.VarChar(255)
-  password        String    @db.VarChar(255)
-  contato         String?   @db.VarChar(255)
-  chatid          String?   @db.VarChar(255)
+  username        String    @unique
+  email           String    @unique
+  password        String
+  contato         String?
+  chatid          String?
   is_admin        Boolean   @default(false)
   is_collaborator Boolean   @default(false)
-  is_client       Boolean   @default(false)
+  is_client       Boolean   @default(true)
   date_joined     DateTime  @default(now())
   last_login      DateTime?
 
   @@map("users")
+}
+
+model Cliente {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  sigla      String?   @db.VarChar(50)
+  comentario String?   @db.Text
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  @@map("clientes")
+}
+
+model Workflow {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  nodes       Json
+  edges       Json
+  user_id     Int
+  client_id   Int?
+  is_active   Boolean   @default(true)
+  status      String    @default("created")
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@map("workflows")
 }

@@ -7,12 +7,7 @@ export async function GET(
 ) {
   try {
     const company = await prisma.cliente.findUnique({
-      where: { id: parseInt(params.id) },
-      include: {
-        asns: true,
-        ipv4s: true,
-        ipv6s: true
-      }
+      where: { id: parseInt(params.id) }
     });
 
     if (!company) {
@@ -44,11 +39,6 @@ export async function PUT(
         name: body.name,
         sigla: body.sigla || null,
         comentario: body.comentario || null
-      },
-      include: {
-        asns: true,
-        ipv4s: true,
-        ipv6s: true
       }
     });
 
@@ -67,20 +57,6 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Delete related records first
-    await Promise.all([
-      prisma.aSN.deleteMany({
-        where: { cliente_id: parseInt(params.id) }
-      }),
-      prisma.iPv4Prefix.deleteMany({
-        where: { cliente_id: parseInt(params.id) }
-      }),
-      prisma.iPv6Prefix.deleteMany({
-        where: { cliente_id: parseInt(params.id) }
-      })
-    ]);
-
-    // Then delete the company
     await prisma.cliente.delete({
       where: { id: parseInt(params.id) }
     });

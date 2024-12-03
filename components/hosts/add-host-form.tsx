@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,10 +12,9 @@ import { Plus, Minus, Loader2 } from 'lucide-react';
 
 interface AddHostFormProps {
   onSuccess: () => void;
-  clientId: number;
 }
 
-export function AddHostForm({ onSuccess, clientId }: AddHostFormProps) {
+export function AddHostForm({ onSuccess }: AddHostFormProps) {
   const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(hostSchema),
@@ -26,7 +23,7 @@ export function AddHostForm({ onSuccess, clientId }: AddHostFormProps) {
       comentario: '',
       status: 'ativo',
       model_id: 1,
-      cliente_id: clientId,
+      cliente_id: 1,
       ips: [{ ip_address: '', version: 'ipv4', type: 'loopback' }],
       snmp: [{ version: 'v2c', community: '' }],
       access_types: [{ type: 'ssh', port: '22' }],
@@ -126,8 +123,8 @@ export function AddHostForm({ onSuccess, clientId }: AddHostFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="bg-[#12141a] border-[#2a2f3a]">
-                      <SelectItem value="ativo">Active</SelectItem>
-                      <SelectItem value="inativo">Inactive</SelectItem>
+                      <SelectItem value="ativo">Ativo</SelectItem>
+                      <SelectItem value="inativo">Inativo</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -288,6 +285,7 @@ export function AddHostForm({ onSuccess, clientId }: AddHostFormProps) {
                         </FormItem>
                       )}
                     />
+                    {/* Add other v3-specific fields here */}
                   </>
                 )}
               </div>
