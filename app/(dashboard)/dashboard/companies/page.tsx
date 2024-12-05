@@ -7,11 +7,15 @@ import { CompanyList } from '@/components/companies/company-list';
 import { useCompanies } from '@/hooks/use-companies';
 import { getCurrentUser } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
-import { Plus, Network } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
+import { AddCompanyDialog } from '@/components/companies/add-company-dialog';
+import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 
 export default function CompaniesPage() {
   const router = useRouter();
   const { companies, isLoading, error } = useCompanies();
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -36,6 +40,15 @@ export default function CompaniesPage() {
     );
   }
 
+  const filteredCompanies = companies?.filter(company => {
+    const searchTerm = searchQuery.toLowerCase();
+    return (
+      company.id.toString().includes(searchTerm) ||
+      company.name.toLowerCase().includes(searchTerm) ||
+      (company.sigla?.toLowerCase() || '').includes(searchTerm)
+    );
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -43,24 +56,21 @@ export default function CompaniesPage() {
           title="Empresas" 
           description="Gerenciar lista de empresas"
         />
-        <div className="flex gap-4">
-          <Button 
-            onClick={() => router.push('/dashboard/ptp')}
-            className="bg-[#12141a] hover:bg-[#1a1d24] text-white"
-          >
-            <Network className="w-4 h-4 mr-2" />
-            PTPs
-          </Button>
-          <Button 
-            onClick={() => router.push('/dashboard/companies/new')}
-            className="bg-white hover:bg-white/90 text-black"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Empresa
-          </Button>
+        <div className="flex gap-4 items-center">
+          <div className="relative w-64">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              type="text"
+              placeholder="Buscar empresas..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 bg-[#12141a] border-[#2a2f3a] text-white w-full"
+            />
+          </div>
+          <AddCompanyDialog />
         </div>
       </div>
-      <CompanyList companies={companies || []} />
+      <CompanyList companies={filteredCompanies || []} />
     </div>
   );
 }

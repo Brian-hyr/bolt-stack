@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     });
 
     const { password: _, ...userWithoutPassword } = user;
-    const token = await createSession(user.id);
+    const token = await createSession(user.id.toString());
 
     return NextResponse.json({ user: userWithoutPassword }, {
       headers: {

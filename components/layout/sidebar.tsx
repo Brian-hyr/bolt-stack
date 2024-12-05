@@ -11,8 +11,12 @@ import {
   Cog,
   FileSpreadsheet,
   ClipboardCheck,
+  LogOut,
+  User
 } from 'lucide-react';
-import { LogoutButton } from '@/components/auth/logout-button';
+import { getCurrentUser, logoutUser } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 const sidebarItems = [
   { name: 'Home', href: '/dashboard', icon: Home },
@@ -26,6 +30,13 @@ const sidebarItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const user = getCurrentUser();
+
+  const handleLogout = () => {
+    logoutUser();
+    router.push('/login');
+  };
 
   return (
     <div className="flex flex-col h-full bg-primary-custom text-white w-64 p-4">
@@ -61,7 +72,25 @@ export function Sidebar() {
       </nav>
 
       <div className="border-t border-gray-700 pt-4 mt-4">
-        <LogoutButton />
+        <div className="flex items-center justify-between px-3 py-2">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-[#12141a] rounded-full flex items-center justify-center">
+              <User className="w-4 h-4" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium">{user?.username}</span>
+              <span className="text-xs text-gray-400">{user?.email}</span>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            className="hover:bg-accent/50"
+          >
+            <LogOut className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

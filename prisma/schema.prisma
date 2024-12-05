@@ -24,28 +24,54 @@ model User {
 }
 
 model Cliente {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(255)
-  sigla      String?   @db.VarChar(50)
-  comentario String?   @db.Text
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  id            Int           @id @default(autoincrement())
+  name          String        @db.VarChar(255)
+  sigla         String?       @db.VarChar(50)
+  comentario    String?       @db.Text
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+  asn_id        Int?
+  domain_id     Int?
+  asns          ASN[]
+  domains       Domain[]
+  ipv4_prefixes IPv4Prefix[]
+  ipv6_prefixes IPv6Prefix[]
 
   @@map("clientes")
 }
 
-model Workflow {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  nodes       Json
-  edges       Json
-  user_id     Int
-  client_id   Int?
-  is_active   Boolean   @default(true)
-  status      String    @default("created")
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+model ASN {
+  id         Int      @id @default(autoincrement())
+  asn_number String   @unique @db.VarChar(50)
+  cliente_id Int?
+  cliente    Cliente? @relation(fields: [cliente_id], references: [id], onDelete: SetNull)
 
-  @@map("workflows")
+  @@map("asn")
+}
+
+model Domain {
+  id          Int      @id @default(autoincrement())
+  domain_name String   @unique @db.VarChar(255)
+  cliente_id  Int?
+  cliente     Cliente? @relation(fields: [cliente_id], references: [id], onDelete: SetNull)
+
+  @@map("domains")
+}
+
+model IPv4Prefix {
+  id         Int      @id @default(autoincrement())
+  prefix     String   @unique @db.VarChar(50)
+  cliente_id Int?
+  cliente    Cliente? @relation(fields: [cliente_id], references: [id], onDelete: SetNull)
+
+  @@map("ipv4_prefixes")
+}
+
+model IPv6Prefix {
+  id         Int      @id @default(autoincrement())
+  prefix     String   @unique @db.VarChar(50)
+  cliente_id Int?
+  cliente    Cliente? @relation(fields: [cliente_id], references: [id], onDelete: SetNull)
+
+  @@map("ipv6_prefixes")
 }
